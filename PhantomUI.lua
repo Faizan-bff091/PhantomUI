@@ -71,9 +71,32 @@ function PhantomUI:CreateWindow(config)
         Parent = rightPanel
     })
 
-    task.delay(2, function()
+-- Fade-in
+for _, obj in ipairs({welcomeFrame, title, desc, logo, rightPanel}) do
+    obj.BackgroundTransparency = 1
+    if obj:IsA("TextLabel") then
+        obj.TextTransparency = 1
+    end
+    TweenService:Create(obj, TweenInfo.new(0.4), {
+        BackgroundTransparency = 0,
+        TextTransparency = 0
+    }):Play()
+end
+
+-- Wait, then fade-out
+task.delay(1.5, function()
+    for _, obj in ipairs({welcomeFrame, title, desc, logo, rightPanel}) do
+        TweenService:Create(obj, TweenInfo.new(0.4), {
+            BackgroundTransparency = 1,
+            TextTransparency = 1
+        }):Play()
+    end
+
+    task.delay(0.5, function()
         welcomeFrame:Destroy()
     end)
+end)
+
 
     -- Main UI
     local mainFrame = create("Frame", {
